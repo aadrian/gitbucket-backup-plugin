@@ -18,8 +18,8 @@ GitBucketのオールインワンのバックアップ機能を提供します�
 
 ```
 # バックアップタイミング（必須）
-# 詳細は http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html
-# を参照してください。以下のキーは以前のバージョンと同じです。"timezone" のデフォルトは UTC です。
+# 詳細は http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html と
+# https://github.com/enragedginger/akka-quartz-scheduler/blob/master/README.md を参照してください。
 # この例では毎日午前0時にバックアップを実行します
 # また、タイムゾーンは明示しないとUTCとなる為、Asia/Tokyoを明示的に指定します 
 akka {
@@ -51,7 +51,7 @@ backup {
   # 通知メールの送信先（オプション）
   notify-dest = ["jyuch@localhost"]
 
-  # バックアップ全体の制限時間（分）。超えた場合は中断し、失敗として通知します（オプション、デフォルトでは制限なし）
+  # バックアップ処理のタイムアウト値（分）（オプション、デフォルトで30分）
   timeout = 60
 
   # バックアップをアップロードするS3互換のオブジェクトストレージ（オプション）

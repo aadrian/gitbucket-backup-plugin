@@ -17,9 +17,9 @@ And email notification what backup success or failure.
 Configuration `GITBUCKET_HOME/backup.conf` as below.
 
 ```
-# Backup timing (Required)
+# Backup timing (Optional; without it, backups only run on demand via the API)
 # For details, see http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html
-# The keys below are kept from earlier versions; "timezone" defaults to UTC
+# The "akka" key names are kept for compatibility with earlier versions; "timezone" defaults to UTC
 # This example, backup 12am every day
 akka {
   quartz {
