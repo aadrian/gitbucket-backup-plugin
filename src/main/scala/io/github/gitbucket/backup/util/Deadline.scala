@@ -7,8 +7,8 @@ import java.util.concurrent.TimeoutException
  * Time limit for a whole backup run (`backup.timeout` in minutes, disabled when unset or <= 0).
  * Steps call `check()` at points where they can stop cleanly.
  */
-class Deadline(timeoutMinutes: Option[Int]) {
-  private val at = timeoutMinutes.filter(_ > 0).map(m => System.currentTimeMillis + m * 60 * 1000L)
+class Deadline(timeoutMinutes: Option[Int], startMillis: Long = System.currentTimeMillis) {
+  private val at = timeoutMinutes.filter(_ > 0).map(m => startMillis + m * 60 * 1000L)
 
   def isExpired: Boolean = at.exists(System.currentTimeMillis >= _)
 

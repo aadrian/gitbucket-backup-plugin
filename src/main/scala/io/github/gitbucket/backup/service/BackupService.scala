@@ -21,14 +21,17 @@ object BackupService extends PluginSettingsService {
   private val busy = new AtomicBoolean(false)
 
   def initialize(): Unit = {
-    val config = loadPluginSettings()
-    config.scheduleExpression match {
-      case Some(expression) =>
-        val cron = new CronExpression(expression)
-        cron.setTimeZone(TimeZone.getTimeZone(config.scheduleTimezone))
-        scheduleNext(cron)
-      case None =>
-        logger.info("No backup schedule configured, backups only run via the API")
+    cronExpression(loadPluginSettings()) match {
+      case Some(cron) => scheduleNext(cron)
+      case None       => logger.info("No backup schedule configured, backups only run via the API")
+    }
+  }
+
+  def cronExpression(config: PluginSettingsService.PluginSettings): Option[CronExpression] = {
+    config.scheduleExpression.map { expression =>
+      val cron = new CronExpression(expression)
+      cron.setTimeZone(TimeZone.getTimeZone(config.scheduleTimezone))
+      cron
     }
   }
 
