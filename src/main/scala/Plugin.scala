@@ -1,12 +1,12 @@
 import gitbucket.core.plugin.PluginRegistry
 import gitbucket.core.service.SystemSettingsService
 import io.github.gitbucket.backup.controller.MainController
-import io.github.gitbucket.backup.service.ActorService
+import io.github.gitbucket.backup.service.BackupService
 import io.github.gitbucket.solidbase.model.Version
 import javax.servlet.ServletContext
 import org.slf4j.LoggerFactory
 
-class Plugin extends gitbucket.core.plugin.Plugin with ActorService {
+class Plugin extends gitbucket.core.plugin.Plugin {
   override val pluginId: String = "backup"
   override val pluginName: String = "Backup Plugin"
   override val description: String = "Provide all in one backup features for GitBucket"
@@ -25,11 +25,11 @@ class Plugin extends gitbucket.core.plugin.Plugin with ActorService {
 
   override def initialize(registry: PluginRegistry, context: ServletContext, settings: SystemSettingsService.SystemSettings): Unit = {
     super[Plugin].initialize(registry, context, settings)
-    super[ActorService].initialize()
+    BackupService.initialize()
   }
 
   override def shutdown(registry: PluginRegistry, context: ServletContext, settings: SystemSettingsService.SystemSettings): Unit = {
-    teardown()
+    BackupService.teardown()
     logger.info("{} is shutting down.", pluginName)
   }
 

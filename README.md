@@ -19,7 +19,7 @@ Configuration `GITBUCKET_HOME/backup.conf` as below.
 ```
 # Backup timing (Required)
 # For details, see http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html
-# and https://github.com/enragedginger/akka-quartz-scheduler/blob/master/README.md
+# The keys below are kept from earlier versions; "timezone" defaults to UTC
 # This example, backup 12am every day
 akka {
   quartz {
@@ -50,7 +50,7 @@ backup {
   # Notify email destination (Optional)
   notify-dest = ["jyuch@localhost"]
 
-  # Timeout value for backup (minutes) (Optional, default:30)
+  # Time limit for the whole backup (minutes); a backup that takes longer is stopped and reported as failed (Optional, default: no limit)
   timeout = 60
 
   # S3 compatible object storage for backup upload (Optional)

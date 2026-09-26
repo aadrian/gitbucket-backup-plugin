@@ -14,7 +14,12 @@ trait PluginSettingsService {
       config.getOptionalBoolean("backup.notify-on-success").getOrElse(false),
       config.getOptionalBoolean("backup.notify-on-failure").getOrElse(false),
       config.getOptionalStringList("backup.notify-dest"),
-      config.getOptionalInt("backup.timeout").getOrElse(30),
+      config.getOptionalString("akka.quartz.schedules.Backup.expression"),
+      // Same fallback as akka-quartz-scheduler, which read these keys before
+      config.getOptionalString("akka.quartz.schedules.Backup.timezone")
+        .orElse(config.getOptionalString("akka.quartz.defaultTimezone"))
+        .getOrElse("UTC"),
+      config.getOptionalInt("backup.timeout"),
       config.getOptionalString("backup.s3.endpoint"),
       config.getOptionalString("backup.s3.region"),
       config.getOptionalString("backup.s3.access-key"),
@@ -33,7 +38,9 @@ object PluginSettingsService {
       notifyOnSuccess: Boolean,
       notifyOnFailure: Boolean,
       notifyDestination: Option[List[String]],
-      timeoutMinutes: Int,
+      scheduleExpression: Option[String],
+      scheduleTimezone: String,
+      timeoutMinutes: Option[Int],
       endpoint: Option[String],
       region: Option[String],
       accessKey: Option[String],
