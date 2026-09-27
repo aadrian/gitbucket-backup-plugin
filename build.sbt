@@ -1,15 +1,19 @@
 name := "gitbucket-backup-plugin"
 organization := "io.github.gitbucket"
 version := "1.7.0-SNAPSHOT"
-scalaVersion := "2.13.10"
-gitbucketVersion := "4.39.0"
+scalaVersion := "2.13.18"
+gitbucketVersion := "4.48.0"
 
 libraryDependencies ++= Seq(
   "org.zeroturnaround" % "zt-zip" % "1.15",
   "com.amazonaws" % "aws-java-sdk-s3" % "1.11.1034",
-  "com.typesafe.akka" %% "akka-actor" % "2.6.20",
-  "com.typesafe.akka" %% "akka-slf4j" % "2.6.20",
-  "com.enragedginger" %% "akka-quartz-scheduler" % "1.9.3-akka-2.6.x" exclude("com.mchange", "c3p0") exclude("com.zaxxer", "HikariCP-java6")
+  "org.quartz-scheduler" % "quartz" % "2.5.2" exclude("jakarta.xml.bind", "jakarta.xml.bind-api")
 )
 
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % "test"
+
 scalacOptions ++= Seq("-deprecation", "-feature")
+
+// Tests run against a throwaway GITBUCKET_HOME
+Test / fork := true
+Test / javaOptions += s"-Dgitbucket.home=${(Test / target).value / "gitbucket-home"}"
